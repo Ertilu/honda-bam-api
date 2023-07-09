@@ -38,6 +38,31 @@ components:
           $ref: '#/components/schemas/Token'
         refresh:
           $ref: '#/components/schemas/Token'
+    
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        vendor:
+          type: string
+        price:
+          type: number
+        in:
+          type: number
+        out:
+          type: number
+        remaining: 
+          type: number
+      example:
+        name: chair
+        vendor: IKEA
+        price: 500000
+        in: 800,
+        out: 200
+        remaining: 600
 
     Error:
       type: object
@@ -84,6 +109,15 @@ components:
           example:
             code: 404
             message: Not found
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Bad Request
 
   securitySchemes:
     bearerAuth:
