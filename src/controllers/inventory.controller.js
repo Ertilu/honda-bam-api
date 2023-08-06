@@ -19,7 +19,10 @@ const getInventories = catchAsync(async (req, res) => {
       $or: [{ name: { $regex: re } }, { vendor: { $regex: re } }],
     };
   }
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const options = {
+    ...pick(req.query, ['sortBy', 'limit', 'page']),
+    populate: 'inStocks,outStocks',
+  };
   const result = await inventoryService.queryInventories(filter, options);
   res.send(result);
 });

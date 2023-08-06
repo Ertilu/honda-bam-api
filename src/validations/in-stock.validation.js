@@ -1,14 +1,15 @@
 const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
-const createInventory = {
+const createInStock = {
   body: Joi.object().keys({
-    name: Joi.string().trim(),
-    price: Joi.number(),
+    inventoryId: Joi.string().required(),
+    vendor: Joi.string(),
+    inStock: Joi.number().required(),
   }),
 };
 
-const getInventories = {
+const getInStocks = {
   query: Joi.object().keys({
     search: Joi.string().optional().allow(''),
     sortBy: Joi.string().optional(),
@@ -17,34 +18,35 @@ const getInventories = {
   }),
 };
 
-const getInventory = {
+const getInStock = {
   params: Joi.object().keys({
-    inventoryId: Joi.string().custom(objectId),
+    inStockId: Joi.string().custom(objectId),
   }),
 };
 
-const updateInventory = {
+const updateInStock = {
   params: Joi.object().keys({
-    inventoryId: Joi.required().custom(objectId),
+    inStockId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
       name: Joi.string().trim(),
+      vendor: Joi.string().trim(),
       price: Joi.number(),
     })
     .min(1),
 };
 
-const deleteInventory = {
+const deleteInStock = {
   params: Joi.object().keys({
-    inventoryId: Joi.string().custom(objectId),
+    inStockId: Joi.string().custom(objectId),
   }),
 };
 
 module.exports = {
-  createInventory,
-  getInventories,
-  getInventory,
-  updateInventory,
-  deleteInventory,
+  createInStock,
+  getInStock,
+  getInStocks,
+  updateInStock,
+  deleteInStock,
 };

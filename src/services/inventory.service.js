@@ -12,7 +12,9 @@ const createInventory = async (inventoryBody) => {
   const out = inventoryBody?.out || 0;
   const newBody = {
     ...inventoryBody,
-    remaining: inStock - out,
+    out,
+    in: inStock,
+    remaining: inStock,
   };
   return Inventory.create(newBody);
 };
@@ -41,15 +43,6 @@ const getInventoryById = async (id) => {
 };
 
 /**
- * Get inventory by email
- * @param {string} email
- * @returns {Promise<Inventory>}
- */
-const getInventoryByEmail = async (email) => {
-  return Inventory.findOne({ email });
-};
-
-/**
  * Update Inventory by id
  * @param {ObjectId} inventoryId
  * @param {Object} updateBody
@@ -58,20 +51,29 @@ const getInventoryByEmail = async (email) => {
 const updateInventoryById = async (inventoryId, updateBody) => {
   const inventory = await getInventoryById(inventoryId);
 
-  const inStock = updateBody?.in || inventory?.in;
-  const out = updateBody?.out || inventory?.out;
+  const inStock = updateBody?.in + inventory?.in || inventory?.in;
+  const out = updateBody?.out + inventory?.out || inventory?.out;
   const newBody = {
     ...updateBody,
+    in: inStock,
+    out,
     remaining: inStock - out,
   };
 
   if (!inventory) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Inventory not found');
   }
-  if (updateBody.email && (await Inventory.isEmailTaken(updateBody.email, inventoryId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
+
   Object.assign(inventory, newBody);
+
+  if (updateBody.inStock) {
+    inventory.inStocks.push(updateBody.inStock);
+  }
+
+  if (updateBody.outStock) {
+    inventory.outStocks.push(updateBody.outStock);
+  }
+
   await inventory.save();
   return inventory;
 };
@@ -94,7 +96,6 @@ module.exports = {
   createInventory,
   queryInventories,
   getInventoryById,
-  getInventoryByEmail,
   updateInventoryById,
   deleteInventoryById,
 };

@@ -8,12 +8,6 @@ const inventorySchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    vendor: {
-      type: String,
-      required: false,
-      unique: false,
-      trim: true,
-    },
     price: {
       type: Number,
       required: true,
@@ -30,6 +24,8 @@ const inventorySchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    inStocks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'InStock' }],
+    outStocks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'OutStock' }],
   },
   {
     timestamps: true,
