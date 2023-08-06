@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { inventoryService } = require('../services');
+const { inventoryService, inStockService, outStockService } = require('../services');
 
 const createInventory = catchAsync(async (req, res) => {
   const inventory = await inventoryService.createInventory(req.body);
@@ -24,6 +24,7 @@ const getInventories = catchAsync(async (req, res) => {
     populate: 'inStocks,outStocks',
   };
   const result = await inventoryService.queryInventories(filter, options);
+
   res.send(result);
 });
 
@@ -42,6 +43,8 @@ const updateInventory = catchAsync(async (req, res) => {
 
 const deleteInventory = catchAsync(async (req, res) => {
   await inventoryService.deleteInventoryById(req.params.inventoryId);
+  await inStockService.deleteInStockByInventoryId(req.params.inventoryId);
+  await outStockService.deleteOutStockByInventoryId(req.params.inventoryId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
