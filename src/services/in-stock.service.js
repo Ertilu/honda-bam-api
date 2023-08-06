@@ -67,7 +67,7 @@ const deleteInStockById = async (id) => {
 };
 
 const deleteInStockByInventoryId = async (inventory) => {
-  return InStock.findOneAndDelete({ inventory });
+  return InStock.deleteMany({ inventory });
 };
 
 module.exports = {
