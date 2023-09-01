@@ -38,6 +38,9 @@ const getInventory = catchAsync(async (req, res) => {
 
 const updateInventory = catchAsync(async (req, res) => {
   const inventory = await inventoryService.updateInventoryById(req.params.inventoryId, req.body);
+  await inStockService.updateInStockByInventoryId(req.params.inventoryId, { inventoryName: req.body.name });
+  await outStockService.updateOutStockByInventoryId(req.params.inventoryId, { inventoryName: req.body.name });
+
   res.send(inventory);
 });
 

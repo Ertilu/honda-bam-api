@@ -15,6 +15,10 @@ const inStockSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Inventory',
     },
+    inventoryName: {
+      type: String,
+      ref: 'Inventory',
+    },
   },
   {
     timestamps: true,

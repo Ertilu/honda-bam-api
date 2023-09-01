@@ -69,6 +69,12 @@ const deleteOutStockByInventoryId = async (inventory) => {
   return OutStock.deleteMany({ inventory });
 };
 
+const updateOutStockByInventoryId = async (inventoryId, data = []) => {
+  const updatedData = await OutStock.updateMany({ inventory: inventoryId }, data);
+
+  return updatedData;
+};
+
 module.exports = {
   createOutStock,
   queryOutStocks,
@@ -76,4 +82,5 @@ module.exports = {
   updateOutStockById,
   deleteOutStockById,
   deleteOutStockByInventoryId,
+  updateOutStockByInventoryId,
 };

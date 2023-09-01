@@ -10,9 +10,12 @@ const createInStock = catchAsync(async (req, res) => {
   try {
     await session.startTransaction();
 
+    const inventory = await inventoryService.getInventoryById(req.body.inventoryId);
+
     const inStock = await inStockService.createInStock({
       ...req.body,
       inventory: req.body.inventoryId,
+      inventoryName: inventory.name,
       in: req.body.inStock,
     });
 
@@ -35,7 +38,7 @@ const getInStocks = catchAsync(async (req, res) => {
     // eslint-disable-next-line security/detect-non-literal-regexp
     const re = new RegExp(`${search}`, 'i');
     filter = {
-      $or: [{ name: { $regex: re } }, { vendor: { $regex: re } }],
+      $or: [{ inventoryName: { $regex: re } }, { vendor: { $regex: re } }],
     };
   }
   const options = {
