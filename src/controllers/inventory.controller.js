@@ -3,6 +3,7 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { inventoryService, inStockService, outStockService } = require('../services');
+const { transformInventory } = require('./inventory.util');
 
 const createInventory = catchAsync(async (req, res) => {
   const inventory = await inventoryService.createInventory(req.body);
@@ -25,7 +26,15 @@ const getInventories = catchAsync(async (req, res) => {
   };
   const result = await inventoryService.queryInventories(filter, options);
 
-  res.send(result);
+  const inventoryIds = [];
+  result.results?.forEach((item) => {
+    inventoryIds.push(item._id);
+  });
+  const { filterStockMonth, filterStockYear } = pick(req.query, ['filterStockMonth', 'filterStockYear']);
+  const inStockPerMonth = await inStockService.getInStockByRangeDate({ inventoryIds, filterStockYear, filterStockMonth });
+  const outStockPerMonth = await outStockService.getOutStockByRangeDate({ inventoryIds, filterStockYear, filterStockMonth });
+
+  res.send(transformInventory(result, inStockPerMonth, outStockPerMonth));
 });
 
 const getInventory = catchAsync(async (req, res) => {

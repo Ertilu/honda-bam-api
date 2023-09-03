@@ -14,6 +14,8 @@ const getInventories = {
     sortBy: Joi.string().optional(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    filterStockMonth: Joi.string().optional(),
+    filterStockYear: Joi.string().optional(),
   }),
 };
 

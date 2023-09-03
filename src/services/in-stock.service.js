@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const moment = require('moment');
 const { InStock } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -76,6 +77,34 @@ const updateInStockByInventoryId = async (inventoryId, data = []) => {
   return updatedData;
 };
 
+const getInStockByRangeDate = async ({ inventoryIds, filterStockYear, filterStockMonth } = {}) => {
+  if (!inventoryIds) {
+    return [];
+  }
+  const currentDate = new Date();
+  const filterDate =
+    filterStockYear && filterStockMonth
+      ? [filterStockYear, filterStockMonth]
+      : [currentDate.getFullYear(), currentDate.getMonth()];
+
+  const inStocks = await InStock.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: moment(filterDate).startOf('month').toDate(),
+          $lt: moment(filterDate).endOf('month').toDate(),
+        },
+        inventory: { $in: inventoryIds },
+      },
+    },
+    {
+      $group: { _id: '$inventory', inStockCurrentMonth: { $sum: '$in' } },
+    },
+  ]);
+
+  return inStocks;
+};
+
 module.exports = {
   createInStock,
   queryInStocks,
@@ -84,4 +113,5 @@ module.exports = {
   deleteInStockById,
   deleteInStockByInventoryId,
   updateInStockByInventoryId,
+  getInStockByRangeDate,
 };

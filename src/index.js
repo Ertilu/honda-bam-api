@@ -10,6 +10,10 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     logger.info(`Listening to port ${config.port}`);
   });
 });
+mongoose.set('debug', true);
+// mongoose.set("debug", (collectionName, method, query, doc) => {
+//   logger(`${collectionName}.${method}`, JSON.stringify(query), doc);
+// });
 
 const exitHandler = () => {
   if (server) {
