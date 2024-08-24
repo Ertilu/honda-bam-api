@@ -1,38 +1,36 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const inventoryValidation = require('../../validations/inventory.validation');
-const inventoryController = require('../../controllers/inventory.controller');
+const cataloguesValidation = require('../../validations/catalogues.validation');
+const cataloguesController = require('../../controllers/catalogues.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageInventory'), validate(inventoryValidation.createInventory), inventoryController.createInventory)
-  .get(auth('getInventory'), validate(inventoryValidation.getInventories), inventoryController.getInventories);
+  .get(validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogues)
+  .post(validate(cataloguesValidation.createCatalogue), cataloguesController.createCatalogue);
 
-router
-  .route('/:inventoryId')
-  .get(auth('getInventory'), validate(inventoryValidation.getInventory), inventoryController.getInventory)
-  .patch(auth('manageInventory'), validate(inventoryValidation.updateInventory), inventoryController.updateInventory)
-  .delete(auth('manageInventory'), validate(inventoryValidation.deleteInventory), inventoryController.deleteInventory);
+// router
+//   .route('/:cataloguesId')
+//   .get(auth('getCatalogues'), validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogues);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Inventory
- *   description: Inventory management and retrieval
+ *   name: catalogues
+ *   description: catalogues management and retrieval
  */
 
 /**
  * @swagger
- * /inventory:
+ * /catalogues:
  *   post:
- *     summary: Create a inventory
- *     description: Only admins can create other inventory.
- *     tags: [Inventory]
+ *     summary: Create a catalogues
+ *     description: Only admins can create other catalogues.
+ *     tags: [catalogues]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -70,7 +68,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Inventory'
+ *                $ref: '#/components/schemas/catalogues'
  *       "400":
  *         $ref: '#/components/responses/BadRequest'
  *       "401":
@@ -81,7 +79,7 @@ module.exports = router;
  *   get:
  *     summary: Get all inventories
  *     description: Only admins can retrieve all inventories.
- *     tags: [Inventory]
+ *     tags: [catalogues]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -125,7 +123,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Inventory'
+ *                     $ref: '#/components/schemas/catalogues'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -147,11 +145,11 @@ module.exports = router;
 
 /**
  *  @swagger
- * /inventory/{id}:
+ * /catalogues/{id}:
  *   get:
- *     summary: Get all inventory
- *     description: Get all inventory.
- *     tags: [Inventory]
+ *     summary: Get all catalogues
+ *     description: Get all catalogues.
+ *     tags: [catalogues]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -160,14 +158,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Inventory id
+ *         description: catalogues id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Inventory'
+ *                $ref: '#/components/schemas/catalogues'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -176,9 +174,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a inventory
- *     description: Delete a inventory
- *     tags: [Inventory]
+ *     summary: Delete a catalogues
+ *     description: Delete a catalogues
+ *     tags: [catalogues]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -187,7 +185,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: inventory id
+ *         description: catalogues id
  *     responses:
  *       "200":
  *         description: No content
@@ -199,9 +197,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a inventory
- *     description: Logged in inventory can only update inventory
- *     tags: [Inventory]
+ *     summary: Update a catalogues
+ *     description: Logged in catalogues can only update catalogues
+ *     tags: [catalogues]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -210,7 +208,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Inventory id
+ *         description: catalogues id
  *     requestBody:
  *       required: true
  *       content:
@@ -240,7 +238,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Inventory'
+ *                $ref: '#/components/schemas/catalogues'
  *       "400":
  *         $ref: '#/components/responses/BadRequest'
  *       "401":
