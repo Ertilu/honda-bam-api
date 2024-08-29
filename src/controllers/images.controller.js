@@ -3,8 +3,8 @@ const request = require('request');
 const fs = require('fs');
 
 const upload = catchAsync(async (req, res) => {
-  if (!fs.existsSync('/uploads')) {
-    fs.mkdirSync('/uploads');
+  if (!fs.existsSync('/tmp')) {
+    fs.mkdirSync('/tmp');
   }
 
   const source = fs.createReadStream(req.file.path);
