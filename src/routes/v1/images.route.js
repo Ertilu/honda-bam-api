@@ -1,6 +1,6 @@
 const express = require('express');
 const imagesController = require('../../controllers/images.controller');
-// const multer = require('multer');
+const multer = require('multer');
 const crypto = require('crypto');
 const path = require('path');
 
@@ -13,10 +13,10 @@ const path = require('path');
 //   },
 // });
 
-// const upload = multer({ storage });
+const upload = multer({ dest: '/tmp' });
 
 const router = express.Router();
 //upload.single('image'),
-router.route('/').post(imagesController.upload);
+router.route('/').post(upload.single('image'), imagesController.upload);
 
 module.exports = router;
