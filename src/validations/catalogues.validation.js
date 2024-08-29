@@ -15,7 +15,7 @@ const createCatalogue = {
     type: Joi.string().trim(),
     colors: Joi.array().items(color),
     logo: Joi.string().trim(),
-    banner: Joi.string().trim(),
+    banners: Joi.array().items(Joi.string()),
     images: Joi.array().items(Joi.string()),
     featureTexts: Joi.array().items(Joi.string()),
     featureImages: Joi.array().items(Joi.string()),

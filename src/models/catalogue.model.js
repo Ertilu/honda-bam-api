@@ -36,8 +36,8 @@ const catalogueSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    banner: {
-      type: String,
+    banners: {
+      type: [String],
       required: false,
     },
     images: {
