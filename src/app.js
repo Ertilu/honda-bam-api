@@ -38,12 +38,8 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-const corsOptions = {
-  credentials: true,
-  origin: ['http://localhost:3000', 'https://ap-honda-bam.vercel.app/'], // Whitelist the domains you want to allow
-};
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use(cors());
+app.options('*', cors());
 
 // jwt authentication
 app.use(passport.initialize());
