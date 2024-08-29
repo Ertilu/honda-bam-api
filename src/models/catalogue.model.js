@@ -5,7 +5,7 @@ const { toJSON, paginate } = require('./plugins');
 const colorSchema = mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: false },
 });
 
 const catalogueSchema = mongoose.Schema(

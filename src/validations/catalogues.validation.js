@@ -4,7 +4,7 @@ const { objectId } = require('./custom.validation');
 let color = Joi.object().keys({
   name: Joi.string().required(),
   code: Joi.string().required(),
-  image: Joi.string().required(),
+  image: Joi.string(),
 });
 
 const createCatalogue = {
