@@ -4,7 +4,14 @@ const { objectId } = require('./custom.validation');
 let color = Joi.object().keys({
   name: Joi.string().required(),
   code: Joi.string().required(),
+  code2: Joi.string(),
+  code3: Joi.string(),
   image: Joi.string(),
+});
+
+let type = Joi.object().keys({
+  name: Joi.string().required(),
+  price: Joi.string().required(),
 });
 
 const createCatalogue = {
@@ -12,7 +19,8 @@ const createCatalogue = {
     name: Joi.string().trim(),
     price: Joi.number(),
     description: Joi.string().trim(),
-    type: Joi.string().trim(),
+    category: Joi.string().required(),
+    types: Joi.array().items(type),
     colors: Joi.array().items(color),
     logo: Joi.string().trim(),
     banners: Joi.array().items(Joi.string()),
