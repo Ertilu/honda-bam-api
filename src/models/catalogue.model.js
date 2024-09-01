@@ -35,8 +35,8 @@ const catalogueSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    type: {
-      type: typeSchema,
+    types: {
+      type: [typeSchema],
       required: false,
     },
     colors: {
