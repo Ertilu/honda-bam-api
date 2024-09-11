@@ -59,7 +59,7 @@ const updateCatalogue = {
 
 const deleteCatalogue = {
   params: Joi.object().keys({
-    CatalogueId: Joi.string().custom(objectId),
+    catalogueId: Joi.string().custom(objectId),
   }),
 };
 

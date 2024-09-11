@@ -29,7 +29,7 @@ const getCatalogues = catchAsync(async (req, res) => {
 });
 
 const getCatalogue = catchAsync(async (req, res) => {
-  const catalogues = await cataloguesService.getCatalogueById(req.params.cataloguesId);
+  const catalogues = await cataloguesService.getCatalogueById(req.params.catalogueId);
   if (!catalogues) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Catalogues not found');
   }
@@ -43,7 +43,7 @@ const updateCatalogues = catchAsync(async (req, res) => {
 });
 
 const deleteCatalogues = catchAsync(async (req, res) => {
-  await cataloguesService.deleteCatalogueById(req.params.cataloguesId);
+  await cataloguesService.deleteCatalogueById(req.params.catalogueId);
 
   res.status(httpStatus.NO_CONTENT).send();
 });

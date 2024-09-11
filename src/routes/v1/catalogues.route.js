@@ -11,9 +11,10 @@ router
   .get(validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogues)
   .post(validate(cataloguesValidation.createCatalogue), cataloguesController.createCatalogue);
 
-// router
-//   .route('/:cataloguesId')
-//   .get(auth('getCatalogues'), validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogues);
+router
+  .route('/:catalogueId')
+  .get(validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogue)
+  .delete(validate(cataloguesValidation.deleteCatalogue), cataloguesController.deleteCatalogues);
 
 module.exports = router;
 
