@@ -9,6 +9,26 @@ const createCatalogue = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(catalogues);
 });
 
+const onTransformResult = (data) => {
+  let result = { ...data };
+  const newResults = [...result.results]?.map((r) => {
+    const data = r.toJSON();
+    const features = [];
+    data.featureTexts.forEach((f, idx) => {
+      features.push({
+        texts: f,
+        images: r.featureImages[idx],
+      });
+    });
+    return {
+      ...data,
+      features,
+    };
+  });
+  result.results = newResults;
+  return result;
+};
+
 const getCatalogues = catchAsync(async (req, res) => {
   let filter = {};
   if (req.query?.search && req.query?.search !== '') {
@@ -21,11 +41,12 @@ const getCatalogues = catchAsync(async (req, res) => {
   }
   const options = {
     ...pick(req.query, ['sortBy', 'limit', 'page']),
-    populate: 'inStocks,outStocks',
   };
-  const result = await cataloguesService.queryCatalogues(filter, options);
 
-  res.send(result);
+  const result = await cataloguesService.queryCatalogues(filter, options);
+  const transformResult = onTransformResult(result);
+
+  res.send(transformResult);
 });
 
 const getCatalogue = catchAsync(async (req, res) => {
