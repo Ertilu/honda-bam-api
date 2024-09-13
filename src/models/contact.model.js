@@ -1,6 +1,7 @@
 // @ts-nocheck
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
+const { mainConnection } = require('./connection');
 
 const promoSchema = mongoose.Schema(
   {
@@ -29,6 +30,6 @@ promoSchema.plugin(paginate);
 /**
  * @typedef Promo
  */
-const Promo = mongoose.model('Promo', promoSchema);
+const Promo = mainConnection.model('Promo', promoSchema);
 
 module.exports = Promo;

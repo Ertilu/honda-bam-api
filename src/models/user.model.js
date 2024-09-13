@@ -4,6 +4,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const { mainConnection } = require('./connection');
 
 const userSchema = mongoose.Schema(
   {
@@ -87,6 +88,6 @@ userSchema.pre('save', async function (next) {
 /**
  * @typedef User
  */
-const User = mongoose.model('User', userSchema);
+const User = mainConnection.model('User', userSchema);
 
 module.exports = User;

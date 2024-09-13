@@ -1,6 +1,7 @@
 // @ts-nocheck
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
+const { mainConnection } = require('./connection');
 
 const colorSchema = mongoose.Schema({
   name: { type: String, required: true },
@@ -76,6 +77,6 @@ catalogueSchema.plugin(paginate);
 /**
  * @typedef Catalogue
  */
-const Catalogue = mongoose.model('Catalogue', catalogueSchema);
+const Catalogue = mainConnection.model('Catalogue', catalogueSchema);
 
 module.exports = Catalogue;
