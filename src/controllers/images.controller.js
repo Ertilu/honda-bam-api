@@ -35,11 +35,9 @@ const upload = catchAsync(async (req, res) => {
     };
     const result = await imagesService.createImage(obj);
 
-    res.send(
-      res.send({
-        image: { url: `data:${result.image.contentType};base64, ${Buffer.from(result.image.data).toString('base64')}` },
-      })
-    );
+    res.send({
+      image: { url: `data:${result.image.contentType};base64, ${Buffer.from(result.image.data).toString('base64')}` },
+    });
   } catch (err) {
     res.send(err);
   }
