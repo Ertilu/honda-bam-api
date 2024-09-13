@@ -25,17 +25,17 @@ const upload = catchAsync(async (req, res) => {
     //   res.send(JSON.parse(response.body));
     // });
 
-    var obj = {
-      name: req.file.originalname,
-      desc: req.file.mimetype,
-      image: {
-        data: fs.readFileSync(req.file.path),
-        contentType: 'image/png',
-      },
-    };
+    // var obj = {
+    //   name: req.file.originalname,
+    //   desc: req.file.mimetype,
+    //   image: {
+    //     data: fs.readFileSync(req.file.path),
+    //     contentType: 'image/png',
+    //   },
+    // };
     // const result = await imagesService.createImage(obj);
 
-    res.send(obj);
+    res.send('obj');
   } catch (err) {
     res.send(err);
   }
