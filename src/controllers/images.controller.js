@@ -32,11 +32,9 @@ const upload = catchAsync(async (req, res) => {
       contentType: 'image/png',
     },
   };
-  const result = await imagesService.createImage(obj);
+  // const result = await imagesService.createImage(obj);
 
-  res.send({
-    image: { url: `data:${result.image.contentType};base64, ${Buffer.from(result.image.data).toString('base64')}` },
-  });
+  res.send(obj);
 });
 
 module.exports = {
