@@ -3,6 +3,7 @@ const request = require('request');
 const fs = require('fs');
 
 const upload = catchAsync(async (req, res) => {
+  '';
   if (!fs.existsSync('/tmp')) {
     fs.mkdirSync('/tmp');
   }
