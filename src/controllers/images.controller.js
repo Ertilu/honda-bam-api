@@ -51,12 +51,17 @@ const cloudinary = async (req, res) => {
   // const source = fs.createReadStream(req.file.path);
   const uploadResult = await cloudinary.uploader.upload(req.file.path, {
     folder: 'catalogues',
-    public_id: req.file.filename,
+    public_id: `${req.file.originalname}${req.file.size}${req.file.encoding}`,
     resource_type: 'auto',
   });
 
+  const optimizeUrl = cloudinary.url(uploadResult.secure_url, {
+    fetch_format: 'auto',
+    quality: 'auto',
+  });
+
   res.send({
-    image: { url: uploadResult?.secure_url },
+    image: { url: optimizeUrl },
   });
 };
 
@@ -65,7 +70,7 @@ const upload = catchAsync(async (req, res) => {
     if (!fs.existsSync('/tmp')) {
       fs.mkdirSync('/tmp');
     }
-
+    console.log('reqfile', req.file);
     /** cloudinary */
     cloudinary(req, res);
   } catch (err) {
