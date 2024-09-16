@@ -13,16 +13,8 @@ const onTransformResult = (data) => {
   let result = { ...data };
   const newResults = [...result.results]?.map((r) => {
     const data = r.toJSON();
-    const features = [];
-    data.featureTexts.forEach((f, idx) => {
-      features.push({
-        texts: f,
-        images: r.featureImages[idx],
-      });
-    });
     return {
       ...data,
-      features,
     };
   });
   result.results = newResults;

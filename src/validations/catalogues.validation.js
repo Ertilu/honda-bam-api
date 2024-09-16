@@ -14,6 +14,12 @@ let type = Joi.object().keys({
   price: Joi.string().required(),
 });
 
+let feature = Joi.object().keys({
+  title: Joi.string().required(),
+  text: Joi.string().required(),
+  image: Joi.string().required(),
+});
+
 const createCatalogue = {
   body: Joi.object().keys({
     name: Joi.string().trim(),
@@ -25,8 +31,7 @@ const createCatalogue = {
     logo: Joi.string().trim(),
     banners: Joi.array().items(Joi.string()),
     images: Joi.array().items(Joi.string()),
-    featureTexts: Joi.array().items(Joi.string()),
-    featureImages: Joi.array().items(Joi.string()),
+    features: Joi.array().items(feature),
   }),
 };
 

@@ -16,6 +16,12 @@ const typeSchema = mongoose.Schema({
   price: { type: String, required: true },
 });
 
+const featureSchema = mongoose.Schema({
+  title: { type: String, required: true },
+  text: { type: String, required: true },
+  image: { type: String, required: true },
+});
+
 const catalogueSchema = mongoose.Schema(
   {
     name: {
@@ -56,14 +62,9 @@ const catalogueSchema = mongoose.Schema(
       type: [String],
       required: false,
     },
-    featureTexts: {
-      type: [String],
-      required: false,
-      trim: true,
-    },
-    featureImages: {
-      type: [String],
-      required: false,
+    features: {
+      type: [featureSchema],
+      required: true,
     },
   },
   {
