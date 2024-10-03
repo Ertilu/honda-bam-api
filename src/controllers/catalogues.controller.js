@@ -28,7 +28,7 @@ const getCatalogues = catchAsync(async (req, res) => {
     // eslint-disable-next-line security/detect-non-literal-regexp
     const re = new RegExp(`${search}`, 'i');
     filter = {
-      $or: [{ name: { $regex: re } }, { price: { $regex: re }, description: { $regex: re }, category: { $regex: re } }],
+      $or: [{ name: { $regex: re }, description: { $regex: re }, category: { $regex: re } }],
     };
   }
   let options = {
@@ -38,6 +38,13 @@ const getCatalogues = catchAsync(async (req, res) => {
 
   if (req.query.sortBy) {
     options.sortBy = req.query.sortBy;
+  }
+
+  if (req.query.category) {
+    filter = {
+      ...filter,
+      category: req.query.category,
+    };
   }
 
   const result = await cataloguesService.queryCatalogues(filter, options);

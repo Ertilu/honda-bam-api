@@ -10,12 +10,26 @@ const createPromo = catchAsync(async (req, res) => {
 });
 
 const getPromos = catchAsync(async (req, res) => {
-  let filter = {};
+  const start = new Date();
+
+  const endOfTheDay = new Date();
+  endOfTheDay.setUTCHours(23, 59, 59, 999);
+
+  let filter = {
+    startDate: {
+      $lt: start,
+    },
+    endDate: {
+      $gt: endOfTheDay,
+    },
+  };
   if (req.query?.search && req.query?.search !== '') {
     const { search } = req.query;
     // eslint-disable-next-line security/detect-non-literal-regexp
     const re = new RegExp(`${search}`, 'i');
+
     filter = {
+      ...filter,
       $or: [{ name: { $regex: re } }, { vendor: { $regex: re } }],
     };
   }

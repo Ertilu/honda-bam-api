@@ -33,6 +33,10 @@ const catalogueSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    downPayment: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       required: false,

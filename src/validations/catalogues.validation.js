@@ -24,6 +24,7 @@ const createCatalogue = {
   body: Joi.object().keys({
     name: Joi.string().trim(),
     price: Joi.number(),
+    downPayment: Joi.number(),
     description: Joi.string().trim(),
     category: Joi.string().required(),
     types: Joi.array().items(type),
@@ -41,6 +42,7 @@ const getCatalogues = {
     sortBy: Joi.string().optional(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    category: Joi.string().optional(),
   }),
 };
 
