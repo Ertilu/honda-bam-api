@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { imagesService } = require('../services');
 const { v2 } = require('cloudinary');
+const httpStatus = require('http-status');
 
 const freeImageHosting = (req, res) => {
   /** free image hosting */
@@ -38,31 +39,35 @@ const uploadToMongoDb = (req, res) => {
 };
 
 const cloudinary = async (req, res) => {
-  const cloudinary = v2;
-  // Configuration
-  cloudinary.config({
-    cloud_name: 'dthdnryp3',
-    api_key: '616178389367325',
-    api_secret: '3ZaTxgGioe7ynwPfM4jP2ijT_PI', // Click 'View API Keys' above to copy your API secret
-  });
+  try {
+    const cloudinary = v2;
+    // Configuration
+    cloudinary.config({
+      cloud_name: 'dthdnryp3',
+      api_key: '616178389367325',
+      api_secret: '3ZaTxgGioe7ynwPfM4jP2ijT_PI', // Click 'View API Keys' above to copy your API secret
+    });
 
-  // Upload an image
+    // Upload an image
 
-  // const source = fs.createReadStream(req.file.path);
-  const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-    folder: 'catalogues',
-    public_id: `${req.file.originalname}${req.file.size}${req.file.encoding}`,
-    resource_type: 'auto',
-  });
+    // const source = fs.createReadStream(req.file.path);
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'catalogues',
+      public_id: `${req.file.originalname}${req.file.size}${req.file.encoding}`,
+      resource_type: 'auto',
+    });
 
-  const optimizeUrl = cloudinary.url(uploadResult.secure_url, {
-    fetch_format: 'auto',
-    quality: 'auto',
-  });
+    const optimizeUrl = cloudinary.url(uploadResult.secure_url, {
+      fetch_format: 'auto',
+      quality: 'auto',
+    });
 
-  res.send({
-    image: { url: optimizeUrl },
-  });
+    res.send({
+      image: { url: optimizeUrl },
+    });
+  } catch (err) {
+    res.status(httpStatus.BAD_REQUEST).send(err);
+  }
 };
 
 const upload = catchAsync(async (req, res) => {
@@ -70,11 +75,10 @@ const upload = catchAsync(async (req, res) => {
     if (!fs.existsSync('/tmp')) {
       fs.mkdirSync('/tmp');
     }
-    console.log('reqfile', req.file);
     /** cloudinary */
-    cloudinary(req, res);
+    await cloudinary(req, res);
   } catch (err) {
-    res.send(err);
+    res.status(httpStatus.BAD_REQUEST).send(err);
   }
 });
 

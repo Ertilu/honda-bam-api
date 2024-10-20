@@ -14,6 +14,7 @@ router
 router
   .route('/:catalogueId')
   .get(validate(cataloguesValidation.getCatalogues), cataloguesController.getCatalogue)
+  .patch(validate(cataloguesValidation.updateCatalogue), cataloguesController.updateCatalogues)
   .delete(validate(cataloguesValidation.deleteCatalogue), cataloguesController.deleteCatalogues);
 
 module.exports = router;

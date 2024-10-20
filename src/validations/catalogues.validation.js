@@ -7,6 +7,7 @@ let color = Joi.object().keys({
   code2: Joi.string(),
   code3: Joi.string(),
   image: Joi.string(),
+  type: Joi.string(),
 });
 
 let type = Joi.object().keys({
@@ -20,20 +21,22 @@ let feature = Joi.object().keys({
   image: Joi.string().required(),
 });
 
+const cataloguePayload = {
+  name: Joi.string().trim(),
+  price: Joi.number(),
+  downPayment: Joi.number(),
+  description: Joi.string().trim(),
+  category: Joi.string().required(),
+  types: Joi.array().items(type),
+  colors: Joi.array().items(color),
+  logo: Joi.string().trim(),
+  banners: Joi.array().items(Joi.string()),
+  images: Joi.array().items(Joi.string()),
+  features: Joi.array().items(feature),
+};
+
 const createCatalogue = {
-  body: Joi.object().keys({
-    name: Joi.string().trim(),
-    price: Joi.number(),
-    downPayment: Joi.number(),
-    description: Joi.string().trim(),
-    category: Joi.string().required(),
-    types: Joi.array().items(type),
-    colors: Joi.array().items(color),
-    logo: Joi.string().trim(),
-    banners: Joi.array().items(Joi.string()),
-    images: Joi.array().items(Joi.string()),
-    features: Joi.array().items(feature),
-  }),
+  body: Joi.object().keys(cataloguePayload),
 };
 
 const getCatalogues = {
@@ -48,20 +51,15 @@ const getCatalogues = {
 
 const getCatalogue = {
   params: Joi.object().keys({
-    CatalogueId: Joi.string().custom(objectId),
+    catalogueId: Joi.string().custom(objectId),
   }),
 };
 
 const updateCatalogue = {
   params: Joi.object().keys({
-    CatalogueId: Joi.required().custom(objectId),
+    catalogueId: Joi.required().custom(objectId),
   }),
-  body: Joi.object()
-    .keys({
-      name: Joi.string().trim(),
-      price: Joi.number(),
-    })
-    .min(1),
+  body: Joi.object().keys(cataloguePayload).min(1),
 };
 
 const deleteCatalogue = {

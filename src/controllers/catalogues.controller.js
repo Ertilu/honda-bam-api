@@ -62,7 +62,7 @@ const getCatalogue = catchAsync(async (req, res) => {
 });
 
 const updateCatalogues = catchAsync(async (req, res) => {
-  const catalogues = await cataloguesService.updateCatalogueById(req.params.cataloguesId, req.body);
+  const catalogues = await cataloguesService.updateCatalogueById(req.params.catalogueId, req.body);
 
   res.send(catalogues);
 });

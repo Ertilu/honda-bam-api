@@ -27,7 +27,7 @@ const queryCatalogues = async (filter, options) => {
 };
 
 /**
- * Get inventory by id
+ * Get catalogue by id
  * @param {Object} id
  * @returns {Promise<Catalogue>}
  */
@@ -37,52 +37,39 @@ const getCatalogueById = async (id) => {
 
 /**
  * Update Catalogue by id
- * @param {Object} inventoryId
+ * @param {Object} catalogueId
  * @param {Object} updateBody
  * @returns {Promise<Catalogue>}
  */
-const updateCatalogueById = async (inventoryId, updateBody) => {
-  const inventory = await getCatalogueById(inventoryId);
+const updateCatalogueById = async (catalogueId, updateBody) => {
+  const catalogue = await getCatalogueById(catalogueId);
 
-  const inStock = updateBody?.in + inventory?.in || inventory?.in;
-  const out = updateBody?.out + inventory?.out || inventory?.out;
   const newBody = {
     ...updateBody,
-    in: inStock,
-    out,
-    remaining: inStock - out,
   };
 
-  if (!inventory) {
+  if (!catalogue) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Catalogue not found');
   }
 
-  Object.assign(inventory, newBody);
+  Object.assign(catalogue, newBody);
 
-  if (updateBody.inStock) {
-    inventory.inStocks.push(updateBody.inStock);
-  }
-
-  if (updateBody.outStock) {
-    inventory.outStocks.push(updateBody.outStock);
-  }
-
-  await inventory.save();
-  return inventory;
+  await catalogue.save();
+  return catalogue;
 };
 
 /**
- * Delete inventory by id
- * @param {Object} inventoryId
+ * Delete catalogue by id
+ * @param {Object} catalogueId
  * @returns {Promise<Catalogue>}
  */
-const deleteCatalogueById = async (inventoryId) => {
-  const inventory = await getCatalogueById(inventoryId);
-  if (!inventory) {
+const deleteCatalogueById = async (catalogueId) => {
+  const catalogue = await getCatalogueById(catalogueId);
+  if (!catalogue) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Catalogue not found');
   }
-  await inventory.remove();
-  return inventory;
+  await catalogue.remove();
+  return catalogue;
 };
 
 module.exports = {

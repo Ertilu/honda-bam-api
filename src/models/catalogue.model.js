@@ -9,6 +9,7 @@ const colorSchema = mongoose.Schema({
   code2: { type: String, required: true },
   code3: { type: String, required: true },
   image: { type: String, required: false },
+  type: { type: String, required: false },
 });
 
 const typeSchema = mongoose.Schema({
