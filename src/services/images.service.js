@@ -68,10 +68,38 @@ const deleteImageById = async (imageId) => {
   return image;
 };
 
+const upsertBrochure = async ({ image }) => {
+  const images = await Image.paginate({ type: 'brochure' }, {});
+
+  let body = {
+    name: 'Brochure',
+    type: 'brochure',
+    desc: 'Brochure',
+    image,
+  };
+  if (!images?.results?.length) {
+    return Image.create(body);
+  } else {
+    let imageExs = images?.results?.[0];
+    imageExs.image = image;
+
+    await imageExs.save();
+    return imageExs;
+  }
+};
+
+const getBrochure = async () => {
+  const images = await Image.paginate({ type: 'brochure' }, {});
+
+  return images;
+};
+
 module.exports = {
   createImage,
   queryImages,
   getImageById,
   updateImageById,
   deleteImageById,
+  upsertBrochure,
+  getBrochure,
 };

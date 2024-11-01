@@ -61,12 +61,13 @@ const cloudinary = async (req, res) => {
       fetch_format: 'auto',
       quality: 'auto',
     });
+    fs.unlinkSync(req.file.path);
 
-    res.send({
+    return {
       image: { url: optimizeUrl },
-    });
+    };
   } catch (err) {
-    res.status(httpStatus.BAD_REQUEST).send(err);
+    throw err;
   }
 };
 
@@ -76,7 +77,33 @@ const upload = catchAsync(async (req, res) => {
       fs.mkdirSync('/tmp');
     }
     /** cloudinary */
-    await cloudinary(req, res);
+    res.send(await cloudinary(req, res));
+  } catch (err) {
+    res.status(httpStatus.BAD_REQUEST).send(err);
+  }
+});
+
+const upsertBrochure = catchAsync(async (req, res) => {
+  try {
+    if (!fs.existsSync('/tmp')) {
+      fs.mkdirSync('/tmp');
+    }
+    const image = {
+      data: fs.readFileSync(req.file.path),
+      contentType: 'image/png',
+    };
+
+    const result = imagesService.upsertBrochure({ image });
+    res.send({ message: 'success' });
+  } catch (err) {
+    res.status(httpStatus.BAD_REQUEST).send(err);
+  }
+});
+
+const getBrochure = catchAsync(async (req, res) => {
+  try {
+    const result = await imagesService.getBrochure();
+    res.send(result?.results?.[0]?.image ?? { data: {} });
   } catch (err) {
     res.status(httpStatus.BAD_REQUEST).send(err);
   }
@@ -84,4 +111,6 @@ const upload = catchAsync(async (req, res) => {
 
 module.exports = {
   upload,
+  upsertBrochure,
+  getBrochure,
 };

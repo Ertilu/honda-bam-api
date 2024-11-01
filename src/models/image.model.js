@@ -10,6 +10,11 @@ const imageSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
+    type: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     desc: {
       type: String,
       required: false,

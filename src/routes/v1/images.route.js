@@ -18,5 +18,6 @@ const upload = multer({ dest: '/tmp' });
 const router = express.Router();
 //upload.single('image'),
 router.route('/').post(upload.single('image'), imagesController.upload);
+router.route('/brochure').post(upload.single('image'), imagesController.upsertBrochure).get(imagesController.getBrochure);
 
 module.exports = router;
