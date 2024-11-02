@@ -19,5 +19,7 @@ const router = express.Router();
 //upload.single('image'),
 router.route('/').post(upload.single('image'), imagesController.upload);
 router.route('/brochure').post(upload.single('image'), imagesController.upsertBrochure).get(imagesController.getBrochure);
+router.route('/banners').post(upload.single('image'), imagesController.addBanner).get(imagesController.getBanners);
+router.route('/banners/:id').delete(imagesController.deleteBanner);
 
 module.exports = router;

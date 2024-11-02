@@ -24,6 +24,11 @@ const imageSchema = mongoose.Schema(
       data: Buffer,
       contentType: String,
     },
+    imageUrl: {
+      type: String,
+      required: false,
+      trim: true,
+    },
   },
   {
     timestamps: true,
