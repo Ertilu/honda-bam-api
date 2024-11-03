@@ -42,7 +42,7 @@ const getPromos = catchAsync(async (req, res) => {
 });
 
 const getPromo = catchAsync(async (req, res) => {
-  const promos = await promosService.getPromoById(req.params.promosId);
+  const promos = await promosService.getPromoById(req.params.promoId);
   if (!promos) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Promos not found');
   }
@@ -50,15 +50,15 @@ const getPromo = catchAsync(async (req, res) => {
 });
 
 const updatePromos = catchAsync(async (req, res) => {
-  const promos = await promosService.updatePromoById(req.params.promosId, req.body);
+  const promos = await promosService.updatePromoById(req.params.promoId, req.body);
 
   res.send(promos);
 });
 
 const deletePromos = catchAsync(async (req, res) => {
-  await promosService.deletePromoById(req.params.promosId);
+  await promosService.deletePromoById(req.params.promoId);
 
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send('success');
 });
 
 module.exports = {

@@ -1,13 +1,16 @@
 const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
+const promoPayload = {
+  name: Joi.string().trim(),
+  images: Joi.array().items(Joi.string()),
+  startDate: Joi.date().iso(),
+  endDate: Joi.date().iso(),
+  content: Joi.string().trim(),
+};
+
 const createPromo = {
-  body: Joi.object().keys({
-    name: Joi.string().trim(),
-    images: Joi.array().items(Joi.string()),
-    startDate: Joi.date().iso(),
-    endDate: Joi.date().iso(),
-  }),
+  body: Joi.object().keys(promoPayload),
 };
 
 const getPromos = {
@@ -21,25 +24,20 @@ const getPromos = {
 
 const getPromo = {
   params: Joi.object().keys({
-    PromoId: Joi.string().custom(objectId),
+    promoId: Joi.string().custom(objectId),
   }),
 };
 
 const updatePromo = {
   params: Joi.object().keys({
-    PromoId: Joi.required().custom(objectId),
+    promoId: Joi.required().custom(objectId),
   }),
-  body: Joi.object()
-    .keys({
-      name: Joi.string().trim(),
-      price: Joi.number(),
-    })
-    .min(1),
+  body: Joi.object().keys(promoPayload).min(1),
 };
 
 const deletePromo = {
   params: Joi.object().keys({
-    PromoId: Joi.string().custom(objectId),
+    promoId: Joi.string().custom(objectId),
   }),
 };
 

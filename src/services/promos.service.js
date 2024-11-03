@@ -3,7 +3,7 @@ const { Promo } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
- * Create a invenvtory
+ * Create a Promo
  * @returns {Promise<Promo>}
  */
 const createPromo = async (body) => {
@@ -27,7 +27,7 @@ const queryPromos = async (filter, options) => {
 };
 
 /**
- * Get inventory by id
+ * Get promo by id
  * @param {Object} id
  * @returns {Promise<Promo>}
  */
@@ -37,52 +37,39 @@ const getPromoById = async (id) => {
 
 /**
  * Update Promo by id
- * @param {Object} inventoryId
+ * @param {Object} promoId
  * @param {Object} updateBody
  * @returns {Promise<Promo>}
  */
-const updatePromoById = async (inventoryId, updateBody) => {
-  const inventory = await getPromoById(inventoryId);
+const updatePromoById = async (promoId, updateBody) => {
+  const promo = await getPromoById(promoId);
 
-  const inStock = updateBody?.in + inventory?.in || inventory?.in;
-  const out = updateBody?.out + inventory?.out || inventory?.out;
   const newBody = {
     ...updateBody,
-    in: inStock,
-    out,
-    remaining: inStock - out,
   };
 
-  if (!inventory) {
+  if (!promo) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Promo not found');
   }
 
-  Object.assign(inventory, newBody);
+  Object.assign(promo, newBody);
 
-  if (updateBody.inStock) {
-    inventory.inStocks.push(updateBody.inStock);
-  }
-
-  if (updateBody.outStock) {
-    inventory.outStocks.push(updateBody.outStock);
-  }
-
-  await inventory.save();
-  return inventory;
+  await promo.save();
+  return promo;
 };
 
 /**
- * Delete inventory by id
- * @param {Object} inventoryId
+ * Delete promo by id
+ * @param {Object} promoId
  * @returns {Promise<Promo>}
  */
-const deletePromoById = async (inventoryId) => {
-  const inventory = await getPromoById(inventoryId);
-  if (!inventory) {
+const deletePromoById = async (promoId) => {
+  const promo = await getPromoById(promoId);
+  if (!promo) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Promo not found');
   }
-  await inventory.remove();
-  return inventory;
+  await promo.remove();
+  return promo;
 };
 
 module.exports = {
